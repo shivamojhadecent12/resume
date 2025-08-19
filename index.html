@@ -2,38 +2,76 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Defender & G-Wagon Video Showcase</title>
+  <title>Car Video Showcase</title>
   <style>
     body {
-      background: #e9f7fd;
-      font-family: Arial, sans-serif;
+      background: #161616;
+      font-family: 'Montserrat', Arial, sans-serif;
       text-align: center;
       margin: 0;
       padding: 0;
+      min-height: 100vh;
     }
     h1 {
-      margin-top: 40px;
-      color: #34495e;
+      margin-top: 65px;
+      font-size: 2.7rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 4px 14px #222, 0 1px 0 #444;
+    }
+    .project-by {
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 8px;
+      margin-bottom: 30px;
+      opacity: 0.8;
+      text-shadow: 0 2px 8px #222;
     }
     .button-group {
-      margin-top: 60px;
+      margin-top: 40px;
       display: flex;
       justify-content: center;
       gap: 40px;
+      flex-wrap: wrap;
     }
     .car-btn {
-      background: #34495e;
-      color: #fff;
-      font-size: 1.2rem;
+      background: linear-gradient(135deg, #232323 0%, #444 100%);
+      color: #fafafa;
+      font-size: 1.3rem;
       padding: 18px 48px;
       border: none;
-      border-radius: 10px;
+      border-radius: 14px;
       cursor: pointer;
-      transition: background 0.2s;
-      box-shadow: 0 2px 8px rgba(30,30,50,0.15);
+      font-weight: 700;
+      letter-spacing: 1px;
+      transition: 
+        background 0.25s, 
+        transform 0.2s,
+        box-shadow 0.2s;
+      box-shadow: 0 2px 24px rgba(30,30,30,0.16);
+      outline: none;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 18px;
     }
-    .car-btn:hover {
-      background: #217dbb;
+    .car-btn:before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, #fff2 0%, #0004 100%);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .car-btn:hover, .car-btn:focus {
+      background: linear-gradient(135deg, #232323 0%, #666 100%);
+      transform: scale(1.07);
+      box-shadow: 0 4px 32px #1118;
     }
     /* Fullscreen video modal */
     .video-modal {
@@ -41,7 +79,7 @@
       left: 0; top: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(20,32,44,0.97);
+      background: #111;
       z-index: 999;
       display: flex;
       align-items: center;
@@ -57,54 +95,81 @@
     }
     .close-btn {
       position: absolute;
-      top: 30px;
-      right: 50px;
-      font-size: 2.5rem;
+      top: 38px;
+      right: 54px;
+      font-size: 2.8rem;
       color: #fff;
       background: none;
       border: none;
       cursor: pointer;
       z-index: 1000;
-      transition: color 0.2s;
+      transition: color 0.2s, transform 0.2s;
+      padding: 0 10px;
+      text-shadow: 0 2px 8px #222;
     }
-    .close-btn:hover {
+    .close-btn:hover, .close-btn:focus {
       color: #ff4444;
+      transform: scale(1.15);
     }
     .video-title {
       color: #fff;
-      font-size: 2rem;
-      margin-bottom: 18px;
-      letter-spacing: 1px;
-      font-weight: 600;
-      text-shadow: 0 2px 12px #222;
+      font-size: 2.1rem;
+      margin-bottom: 22px;
+      letter-spacing: 2px;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-shadow: 0 2px 14px #222;
+      filter: grayscale(1) contrast(1.1);
     }
     .video-frame {
       width: 90vw;
       max-width: 1100px;
       aspect-ratio: 16/9;
       background: #000;
-      border-radius: 8px;
-      box-shadow: 0 4px 28px rgba(0,0,0,0.35);
-      border: none;
+      border-radius: 13px;
+      box-shadow: 0 6px 36px #000c, 0 1px 0 #fff3;
+      border: 3px solid #fff1;
+      filter: grayscale(1) contrast(1.1);
+      transition: box-shadow 0.3s;
+    }
+    .video-modal.active .video-frame {
+      box-shadow: 0 10px 50px #000f, 0 1px 0 #fff2;
+    }
+    .car-btn:active {
+      box-shadow: 0 0 0 5px #fff3;
     }
     @media (max-width: 600px) {
-      .video-title { font-size: 1.2rem; }
-      .close-btn { font-size: 2rem; right: 20px; top: 15px; }
-      .video-frame { width: 98vw; }
-      .car-btn { font-size: 1rem; padding: 12px 24px; }
+      h1 { font-size: 1.4rem; }
+      .project-by { font-size: 0.7rem; }
+      .video-title { font-size: 1rem; }
+      .close-btn { font-size: 2rem; right: 18px; top: 12px; }
+      .video-frame { width: 99vw; border-radius: 6px; }
+      .car-btn { font-size: 1rem; padding: 10px 16px; border-radius: 8px; }
+      .button-group { gap: 18px; }
+    }
+    .video-modal {
+      animation: modalFadeIn 0.5s;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700,800&display=swap" rel="stylesheet">
 </head>
 <body>
   <h1>Choose Your Car Video</h1>
+  <div class="project-by">Project by Shivam Ojha</div>
   <div class="button-group">
     <button class="car-btn" onclick="openVideo('defender')">Defender</button>
     <button class="car-btn" onclick="openVideo('gwagon')">G-Wagon</button>
+    <button class="car-btn" onclick="openVideo('landcruiser')">Toyota Land Cruiser</button>
+    <button class="car-btn" onclick="openVideo('ghost')">Rolls Royce Ghost</button>
   </div>
 
   <!-- Defender Video Modal -->
   <div id="defenderModal" class="video-modal">
-    <button class="close-btn" onclick="closeVideo('defender')">&times;</button>
+    <button class="close-btn" onclick="closeVideo('defender')" aria-label="Close">&times;</button>
     <div class="video-title">Land Rover Defender</div>
     <iframe class="video-frame"
       src="https://www.youtube.com/embed/QU32Wpk8v3w?autoplay=1&rel=0"
@@ -115,11 +180,33 @@
   </div>
   <!-- G-Wagon Video Modal -->
   <div id="gwagonModal" class="video-modal">
-    <button class="close-btn" onclick="closeVideo('gwagon')">&times;</button>
+    <button class="close-btn" onclick="closeVideo('gwagon')" aria-label="Close">&times;</button>
     <div class="video-title">Mercedes-Benz G-Wagon</div>
     <iframe class="video-frame"
       src="https://www.youtube.com/embed/d1VmwEgJ8Ww?autoplay=1&rel=0"
       title="G-Wagon Video"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <!-- Land Cruiser Video Modal -->
+  <div id="landcruiserModal" class="video-modal">
+    <button class="close-btn" onclick="closeVideo('landcruiser')" aria-label="Close">&times;</button>
+    <div class="video-title">Toyota Land Cruiser</div>
+    <iframe class="video-frame"
+      src="https://www.youtube.com/embed/7RlSuvNk0qM?autoplay=1&rel=0"
+      title="Toyota Land Cruiser Video"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <!-- Rolls Royce Ghost Video Modal -->
+  <div id="ghostModal" class="video-modal">
+    <button class="close-btn" onclick="closeVideo('ghost')" aria-label="Close">&times;</button>
+    <div class="video-title">Rolls Royce Ghost</div>
+    <iframe class="video-frame"
+      src="https://www.youtube.com/embed/PCc1qDMsgMI?autoplay=1&rel=0"
+      title="Rolls Royce Ghost Video"
       allow="autoplay; encrypted-media"
       allowfullscreen>
     </iframe>
@@ -142,6 +229,8 @@
       if (e.key === 'Escape') {
         closeVideo('defender');
         closeVideo('gwagon');
+        closeVideo('landcruiser');
+        closeVideo('ghost');
       }
     });
   </script>
