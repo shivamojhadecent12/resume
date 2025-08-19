@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Defender Car Video Showcase</title>
+  <title>Defender & G-Wagon Video Showcase</title>
   <style>
     body {
       background: #e9f7fd;
@@ -12,36 +12,138 @@
       padding: 0;
     }
     h1 {
-      margin-top: 30px;
+      margin-top: 40px;
       color: #34495e;
     }
-    .video-container {
-      margin: 40px auto;
-      max-width: 800px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.2);
-      border-radius: 12px;
-      background: #fff;
-      padding: 18px;
+    .button-group {
+      margin-top: 60px;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
     }
-    iframe {
-      width: 100%;
-      aspect-ratio: 16/9;
-      border-radius: 8px;
+    .car-btn {
+      background: #34495e;
+      color: #fff;
+      font-size: 1.2rem;
+      padding: 18px 48px;
       border: none;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(30,30,50,0.15);
+    }
+    .car-btn:hover {
+      background: #217dbb;
+    }
+    /* Fullscreen video modal */
+    .video-modal {
+      position: fixed;
+      left: 0; top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(20,32,44,0.97);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: opacity 0.3s;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .video-modal.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .close-btn {
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      font-size: 2.5rem;
+      color: #fff;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+      transition: color 0.2s;
+    }
+    .close-btn:hover {
+      color: #ff4444;
+    }
+    .video-title {
+      color: #fff;
+      font-size: 2rem;
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+      font-weight: 600;
+      text-shadow: 0 2px 12px #222;
+    }
+    .video-frame {
+      width: 90vw;
+      max-width: 1100px;
+      aspect-ratio: 16/9;
       background: #000;
+      border-radius: 8px;
+      box-shadow: 0 4px 28px rgba(0,0,0,0.35);
+      border: none;
+    }
+    @media (max-width: 600px) {
+      .video-title { font-size: 1.2rem; }
+      .close-btn { font-size: 2rem; right: 20px; top: 15px; }
+      .video-frame { width: 98vw; }
+      .car-btn { font-size: 1rem; padding: 12px 24px; }
     }
   </style>
 </head>
 <body>
-  <h1>Land Rover Defender in Action</h1>
-  <div class="video-container">
-    <iframe 
-      src="https://www.youtube.com/embed/QU32Wpk8v3w?autoplay=1&rel=0" 
+  <h1>Choose Your Car Video</h1>
+  <div class="button-group">
+    <button class="car-btn" onclick="openVideo('defender')">Defender</button>
+    <button class="car-btn" onclick="openVideo('gwagon')">G-Wagon</button>
+  </div>
+
+  <!-- Defender Video Modal -->
+  <div id="defenderModal" class="video-modal">
+    <button class="close-btn" onclick="closeVideo('defender')">&times;</button>
+    <div class="video-title">Land Rover Defender</div>
+    <iframe class="video-frame"
+      src="https://www.youtube.com/embed/QU32Wpk8v3w?autoplay=1&rel=0"
       title="Land Rover Defender Video"
       allow="autoplay; encrypted-media"
       allowfullscreen>
     </iframe>
   </div>
+  <!-- G-Wagon Video Modal -->
+  <div id="gwagonModal" class="video-modal">
+    <button class="close-btn" onclick="closeVideo('gwagon')">&times;</button>
+    <div class="video-title">Mercedes-Benz G-Wagon</div>
+    <iframe class="video-frame"
+      src="https://www.youtube.com/embed/d1VmwEgJ8Ww?autoplay=1&rel=0"
+      title="G-Wagon Video"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <script>
+    function openVideo(car) {
+      document.getElementById(car + 'Modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeVideo(car) {
+      document.getElementById(car + 'Modal').classList.remove('active');
+      document.body.style.overflow = '';
+      // Stop video playback by resetting iframe src
+      var iframe = document.querySelector('#' + car + 'Modal iframe');
+      var src = iframe.getAttribute('src');
+      iframe.setAttribute('src', src);
+    }
+    // Optional: close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeVideo('defender');
+        closeVideo('gwagon');
+      }
+    });
+  </script>
 </body>
 </html>
